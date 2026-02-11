@@ -54,14 +54,23 @@ async function safeErrorMessage(res) {
   try {
     const data = await res.json();
     if (data && typeof data.detail === "string") {
-      return data.detail;
+      return normalizeInternalServerError(data.detail);
     }
     if (data && typeof data.message === "string") {
-      return data.message;
+      return normalizeInternalServerError(data.message);
     }
   } catch {
     // ignore
   }
-  return res.statusText;
+  return normalizeInternalServerError(res.statusText);
 }
+
+function normalizeInternalServerError(message) {
+  if (!message) return message;
+  if (message.toLowerCase().includes("internal server error")) {
+    return "Unable to process logs. Please try again.";
+  }
+  return message;
+}
+
 

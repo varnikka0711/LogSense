@@ -4,20 +4,16 @@ import { uploadLogs } from "../services/api.js";
 function UploadBox({ onUploadSuccess }) {
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
     setFile(e.target.files?.[0] || null);
-    setError("");
   };
 
   const handleUpload = async () => {
     if (!file) {
-      setError("Choose a log export file first.");
       return;
     }
     setIsUploading(true);
-    setError("");
     try {
       await uploadLogs(file);
       setFile(null);
@@ -25,7 +21,9 @@ function UploadBox({ onUploadSuccess }) {
         await onUploadSuccess();
       }
     } catch (err) {
-      setError(err.message || "Upload failed");
+      // Swallow errors for a clean, silent demo UI
+      // eslint-disable-next-line no-console
+      console.error("Failed to upload logs", err);
     } finally {
       setIsUploading(false);
     }
@@ -63,7 +61,6 @@ function UploadBox({ onUploadSuccess }) {
           {isUploading ? "Uploading…" : "Upload & Parse"}
         </button>
       </div>
-      {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
     </div>
   );
 }
