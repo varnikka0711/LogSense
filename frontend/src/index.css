@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  @apply bg-background text-slate-100 font-sans antialiased;
+}
+
+.logsense-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+}
+
+.logsense-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.logsense-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.logsense-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.6);
+  border-radius: 999px;
+}
+
